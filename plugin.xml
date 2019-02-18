@@ -1,7 +1,7 @@
-<library path = "lib/libcoop_control">
-  <class name = "coop_control/coopPlugin" type = "coop_control::coopPlugin" base_class_type = "rqt_gui_cpp::Plugin">
+<library path="lib/libcoop_control">
+  <class name="coop_control/coopPlugin" type="coop_control::coopPlugin" base_class_type="rqt_gui_cpp::Plugin">
     <description>
-      coop_control rqt 
+      An example C++ GUI plugin to create a great user interface.
     </description>
     <qtgui>
       <!-- optional grouping...
@@ -12,9 +12,9 @@
         <label>Subgroup</label>
       </group>
       -->
-      <label>coop_control Plugin</label>
-      <icon type = "theme">applications-graphics</icon>
-      <statustip>coop_control panel user interface.</statustip>
+      <label>coop_control(test) C++ Plugin</label>
+      <icon type="theme">applications-graphics</icon>
+      <statustip>Great user interface to provide real value.</statustip>
     </qtgui>
   </class>
 </library>

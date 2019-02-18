@@ -8,26 +8,28 @@ project(coop_control)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  message_generation
   roscpp
   roslint
   rqt_gui
   rqt_gui_cpp
   std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
   find_package(Qt5Widgets REQUIRED)
 else()
   find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
   include(${QT_USE_FILE})
 endif()
+# find_package(Boost REQUIRED COMPONENTS system)
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+# catkin_python_setup()
 catkin_python_setup()
 
 roslint_cpp()
@@ -63,6 +65,8 @@ roslint_cpp()
 #   Message2.msg
 # )
 
+
+
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -78,10 +82,7 @@ roslint_cpp()
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -115,16 +116,18 @@ roslint_cpp()
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES coop_control
-  CATKIN_DEPENDS message_generation roscpp roslint rqt_gui rqt_gui_cpp std_msgs
+  CATKIN_DEPENDS roscpp roslint rqt_gui rqt_gui_cpp std_msgs
   DEPENDS system_lib
 )
 
-set(coop_control_SRCS
+set (coop_control_SRCS
   src/coop_control.cpp
 )
+
 set(coop_control_HDRS
   include/coop_control/coop_control.h
 )
+
 set(coop_control_UIS
   src/coop_control.ui
 )
@@ -134,7 +137,7 @@ if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
   qt5_wrap_ui(coop_control_UIS_H ${coop_control_UIS})
 else()
   qt4_wrap_cpp(coop_control_MOCS ${coop_control_HDRS})
-  qt4_wrap_cpp(coop_control_UIS_H ${coop_control_UIS})
+  qt4_wrap_ui(coop_control_UIS_H ${coop_control_UIS})
 endif()
 
 ###########
@@ -145,8 +148,8 @@ endif()
 ## Your package locations should be listed before other locations
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
   ${CMAKE_CURRENT_BINARY_DIR}/..
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -154,9 +157,9 @@ include_directories(
 #   src/${PROJECT_NAME}/coop_control.cpp
 # )
 add_library(${PROJECT_NAME}
-  ${${PROJECT_NAME}_SRCS}
-  ${${PROJECT_NAME}_MOCS}
-  ${${PROJECT_NAME}_UIS_H}
+    ${${PROJECT_NAME}_SRCS}
+    ${${PROJECT_NAME}_MOCS}
+    ${${PROJECT_NAME}_UIS_H}
 )
 
 ## Add cmake target dependencies of the library
@@ -193,12 +196,24 @@ if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
 else()
   target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 endif()
-
 add_dependencies(${PROJECT_NAME} coop_control_generate_messages_cpp)
-
 #############
 ## Install ##
 #############
+
+install(PROGRAMS scripts/coop_control
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY
+  resource
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(FILES
+  plugin.xml
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
