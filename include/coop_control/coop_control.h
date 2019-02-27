@@ -53,8 +53,12 @@ private:
 
   private slots:
     void on_enterButton_clicked();
-    void on_gainplus_clicked();
-    void on_gainminus_clicked();
+    void on_kp_plus_clicked();
+    void on_kp_minus_clicked();
+    void on_ki_plus_clicked();
+    void on_ki_minus_clicked();
+    void on_kd_plus_clicked();
+    void on_kd_minus_clicked();
 };
 } //namespace coop_control
 #endif //COOP_CONTROL_COOP_CONTROL_H

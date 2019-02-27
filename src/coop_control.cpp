@@ -17,6 +17,8 @@ coopPlugin::coopPlugin()
 
 static QString qstr;
 static double kp, ki, kd;
+double gap = 1;
+coop_control::msgpid msg;
 
 void coopPlugin::on_enterButton_clicked() 
 {
@@ -29,38 +31,134 @@ void coopPlugin::on_enterButton_clicked()
     //qstr = ui_.lineEdit_2->text();
     kd = ui_.lineEdit_4->text().toDouble();
 
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
     //ui_.lineEdit->setText(qstr);
-    coop_control::msgpid msg;
     msg.a = kp;
     msg.b = ki;
     msg.c = kd;
     gain_pub.publish(msg);    
 }
 
-void coopPlugin::on_gainplus_clicked() 
+void coopPlugin::on_kp_plus_clicked() 
 {
-    kp = kp+1;
+    gap = ui_.gap->text().toDouble();
+    kp = kp+gap;
     qstr = QString::number(kp);
-    ui_.lineEdit->setText(qstr);
+    //ui_.lineEdit->setText(qstr);
     ui_.lineEdit_2->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
 }
 
-void coopPlugin::on_gainminus_clicked()
+void coopPlugin::on_kp_minus_clicked()
 {
-    kp = kp-1;
+    gap = ui_.gap->text().toDouble();
+    kp = kp-gap;
     qstr = QString::number(kp);
-    ui_.lineEdit->setText(qstr);
+    //ui_.lineEdit->setText(qstr);
     ui_.lineEdit_2->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_ki_plus_clicked() 
+{
+    gap = ui_.gap->text().toDouble();
+    ki = ki+gap;
+    qstr = QString::number(ki);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_3->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_ki_minus_clicked()
+{
+    gap = ui_.gap->text().toDouble();
+    ki = ki-gap;
+    qstr = QString::number(ki);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_3->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kd_plus_clicked() 
+{
+    gap = ui_.gap->text().toDouble();
+    kd = kd+gap;
+    qstr = QString::number(kd);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_4->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kd_minus_clicked()
+{
+    gap = ui_.gap->text().toDouble();
+    kd = kd-gap;
+    qstr = QString::number(kd);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_4->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
 }
 
 void coopPlugin::connectionfunc()
 {
     QObject::connect(ui_.pushButton_6, SIGNAL(clicked()),
             this, SLOT(on_enterButton_clicked())    );
-    QObject::connect(ui_.pushButton_4, SIGNAL(clicked()),
-            this, SLOT(on_gainplus_clicked())    );
-    QObject::connect(ui_.pushButton_5, SIGNAL(clicked()),
-            this, SLOT(on_gainminus_clicked())    );
+    QObject::connect(ui_.kp_plus, SIGNAL(clicked()),
+            this, SLOT(on_kp_plus_clicked())    );
+    QObject::connect(ui_.kp_minus, SIGNAL(clicked()),
+            this, SLOT(on_kp_minus_clicked())    );
+    QObject::connect(ui_.ki_plus, SIGNAL(clicked()),
+            this, SLOT(on_ki_plus_clicked())    );
+    QObject::connect(ui_.ki_minus, SIGNAL(clicked()),
+            this, SLOT(on_ki_minus_clicked())    );
+    QObject::connect(ui_.kd_plus, SIGNAL(clicked()),
+            this, SLOT(on_kd_plus_clicked())    );
+    QObject::connect(ui_.kd_minus, SIGNAL(clicked()),
+            this, SLOT(on_kd_minus_clicked())    );
 }
 
 void coopPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
