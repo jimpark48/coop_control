@@ -2,105 +2,116 @@
 #include <pluginlib/class_list_macros.h>
 #include <QStringList>
 #include <stdlib.h>
-#include <thread>
 #include <string.h>
+#include "coop_control/msgpid.h"
 
 namespace coop_control
 {
 coopPlugin::coopPlugin()
-  : rqt_gui_cpp::Plugin()
-  , widget_(0)
+    : rqt_gui_cpp::Plugin()
+    , widget_(0)
 {
-  // Constructor is called first before initPlugin function, needless to say.
-
-  // give QObjects reasonable names
-  setObjectName("coopPlugin");
+    //give QObjects reasonable names
+    setObjectName("coopPlugin");
 }
 
-//global variables
-static QString qstr1;
+static QString qstr;
+static double kp, ki, kd;
 
 void coopPlugin::on_enterButton_clicked() 
 {
-    qstr1 = ui_.lineEdit_2->text();
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
 
-    ui_.lineEdit->setText(qstr1);
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+
+    //ui_.lineEdit->setText(qstr);
+    coop_control::msgpid msg;
+    msg.a = kp;
+    msg.b = ki;
+    msg.c = kd;
+    gain_pub.publish(msg);    
 }
 
-//set initial connection of gui and functions
+void coopPlugin::on_gainplus_clicked() 
+{
+    kp = kp+1;
+    qstr = QString::number(kp);
+    ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_2->setText(qstr);
+}
+
+void coopPlugin::on_gainminus_clicked()
+{
+    kp = kp-1;
+    qstr = QString::number(kp);
+    ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_2->setText(qstr);
+}
+
 void coopPlugin::connectionfunc()
 {
     QObject::connect(ui_.pushButton_6, SIGNAL(clicked()),
             this, SLOT(on_enterButton_clicked())    );
-
-    //"this" means source code, and in this case, it means "aidinPlugin".
+    QObject::connect(ui_.pushButton_4, SIGNAL(clicked()),
+            this, SLOT(on_gainplus_clicked())    );
+    QObject::connect(ui_.pushButton_5, SIGNAL(clicked()),
+            this, SLOT(on_gainminus_clicked())    );
 }
 
 void coopPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
 {
-  // access standalone command line arguments
-  QStringList argv = context.argv();
-  // create QWidget
-  widget_ = new QWidget();
-  // extend the widget with all attributes and children from UI file
-  ui_.setupUi(widget_);
-  // add widget to the user interface
-  context.addWidget(widget_);
+    //access standalone command line arguments
+    QStringList argv = context.argv();
+    //create QWidget
+    widget_ = new QWidget();
+    //extend the widget with all attributes and children from UI file
+    ui_.setupUi(widget_);
+    //add widget to the user interface
+    context.addWidget(widget_);
 
-  // add menu to the listview
-  model = new QStringListModel(this); //dynamic memories allocates
-  QStringList list; //
-  list  << "eigentransmit eigentransmit.launch" 
-        << "rqt_gui_test rqt_gui_test_publisher" 
-        << "aidinvi walking_vis.launch"
-        << "rviz rviz" //set the menu list
-        << "plot: /gazebo/aidinvi_footpos"
-        << "plot: /aidinvi_actp"
-        << "plot: /gazebo/aidinvi_jointt"
-        << "plot: /aidinvi_actt"
-        << "plot: /aidinvi_contact"
-        << "rqt_gui_test rqt_gui_test_subscriber"
-        << "command: Foottrajectory on" //msg topic command
-        << "command: Foottrajectory off"
-        << "command: Footprint on"
-        << "command: Footprint off"
-        << "command: Cobtrajectory on"
-        << "command: Cobtrajectory off";
-        
-  model->setStringList(list);
-  ui_.listView->setModel(model);
-  
-  connectionfunc();
+    model = new QStringListModel(this); //dynamic memories allocates
+    QStringList list;
+    list << "undefined";
+
+    model->setStringList(list);
+    ui_.listView->setModel(model);
+
+    gain_pub = nh.advertise<coop_control::msgpid>("pidgain", 3);
+
+    connectionfunc();
 }
 
-//additional functions must exist before shutdownPlugin function!!!!!!!!!!!!!
 void coopPlugin::shutdownPlugin()
 {
-  // unregister all publishers here
+    //unregister all publishers here
 }
 
 void coopPlugin::saveSettings(qt_gui_cpp::Settings& plugin_settings,
     qt_gui_cpp::Settings& instance_settings) const
 {
-  // instance_settings.setValue(k, v)
+    //instance_settings.setValue(k, v)
 }
 
-void coopPlugin::restoreSettings(const qt_gui_cpp::Settings& plugin_settings,
+void coopPlugin::restoreSettings(const qt_gui_cpp::Settings& plugin_settings, 
     const qt_gui_cpp::Settings& instance_settings)
 {
-  // v = instance_settings.value(k)
+    //v = instance_settings.value(k)
 }
 
 /*bool hasConfiguration() const
 {
-  return true;
+    return true;
 }
 
 void triggerConfiguration()
 {
-  // Usually used to open a dialog to offer the user a set of configuration
+    //Usually used to open a dialog to offer the user a set of configuration
 }*/
-
-}  // namespace coop_control
+} // namespace coop_control
 
 PLUGINLIB_EXPORT_CLASS(coop_control::coopPlugin, rqt_gui_cpp::Plugin)
