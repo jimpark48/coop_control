@@ -1,3 +1,3 @@
-float32 a
-float32 b
-float32 c
+float64 a
+float64 b
+float64 c

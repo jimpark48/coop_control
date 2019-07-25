@@ -65,6 +65,7 @@ roslint_cpp()
 add_message_files(
 	FILES
 	msgpid.msg
+	one.msg
 )
 
 ## Generate services in the 'srv' folder
