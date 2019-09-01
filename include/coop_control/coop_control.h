@@ -50,6 +50,7 @@ private:
   ros::Publisher target_pub;
   ros::Publisher reset_pub;
   ros::Publisher command_pub;
+  ros::Publisher legtest_pub;
 
   Q_SIGNALS:
     void clicked();
