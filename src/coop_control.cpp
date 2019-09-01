@@ -31,6 +31,7 @@ std_msgs::Float64 msgtarget;
 std_msgs::Int32 msgreset;
 //[0] is feedforward, [1] is PID, [2] is gravity, [3] is friction
 std_msgs::Int32MultiArray msgcommand;
+std_msgs::Float64MultiArray msgleg;
 
 char *str;
 
@@ -274,6 +275,10 @@ void coopPlugin::on_activated_clicked2()
         msgcommand.data[3] = 1;
         command_pub.publish(msgcommand);
     }
+    else if(strcmp(str, "legtest") == 0) {
+        msgleg.data[1] = 1;
+        legtest_pub.publish(msgleg);
+    }
 }
 
 void coopPlugin::on_quit_clicked()
@@ -300,6 +305,10 @@ void coopPlugin::on_quit_clicked()
     else if(strcmp(str, "friction") == 0) {
         msgcommand.data[3] = 0;
         command_pub.publish(msgcommand);
+    }
+    else if(strcmp(str, "legtest") == 0) {
+        msgleg.data[1] = 0;
+        legtest_pub.publish(msgleg);
     }
 }
 
@@ -380,7 +389,9 @@ void coopPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
          << "command: feedforward"
          << "command: PID"
          << "command: gravity"
-         << "command: friction";
+         << "command: friction"
+         << "command: legtest"
+         << "command: gaincontrol";
 
     model->setStringList(list);
     ui_.listView->setModel(model);
@@ -389,9 +400,11 @@ void coopPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
     target_pub = nh.advertise<std_msgs::Float64>("Target", 1);
     reset_pub = nh.advertise<std_msgs::Int32>("reset", 1);
     command_pub = nh.advertise<std_msgs::Int32MultiArray>("control_command", 1);
+    legtest_pub = nh.advertise<std_msgs::Float64MultiArray>("/legtest", 3);
 
     msg.data.resize(3);
     msgcommand.data.resize(4);
+    msgleg.data.resize(2);
 
     command_reset = 0;
     for(int i = 0; i < 4; i++) {
