@@ -51,6 +51,7 @@ private:
   ros::Publisher reset_pub;
   ros::Publisher command_pub;
   ros::Publisher legtest_pub;
+  ros::Subscriber gain_sub;
 
   Q_SIGNALS:
     void clicked();
@@ -64,6 +65,21 @@ private:
     void on_ki_minus_clicked();
     void on_kd_plus_clicked();
     void on_kd_minus_clicked();
+
+    void on_kp_h_plus_clicked();
+    void on_kp_h_minus_clicked();
+    void on_ki_h_plus_clicked();
+    void on_ki_h_minus_clicked();
+    void on_kd_h_plus_clicked();
+    void on_kd_h_minus_clicked();
+
+    void on_kp_k_plus_clicked();
+    void on_kp_k_minus_clicked();
+    void on_ki_k_plus_clicked();
+    void on_ki_k_minus_clicked();
+    void on_kd_k_plus_clicked();
+    void on_kd_k_minus_clicked();
+
     void on_target_clicked();
     void on_reset_clicked();
     void on_activated_clicked();

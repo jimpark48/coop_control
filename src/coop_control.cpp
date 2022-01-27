@@ -25,6 +25,9 @@ coopPlugin::coopPlugin()
 static QString qstr;
 static QString qstrlist;
 static double kp, ki, kd, target;
+static double kp_s, ki_s, kd_s;
+static double kp_h, ki_h, kd_h;
+static double kp_k, ki_k, kd_k;
 double gapkp, gapki, gapkd;
 std_msgs::Float64MultiArray msg;
 std_msgs::Float64 msgtarget;
@@ -37,14 +40,50 @@ char *str;
 
 int command_reset = 0;
 
+void msgCallbackinitgain(const std_msgs::Float64MultiArray::ConstPtr &msg_dummy)
+{
+    kp_s = msg_dummy->data[0];
+    ki_s = msg_dummy->data[1];
+    kd_s = msg_dummy->data[2];
+
+    kp_h = msg_dummy->data[3];
+    ki_h = msg_dummy->data[4];
+    kd_h = msg_dummy->data[5];
+
+    kp_k = msg_dummy->data[6];
+    ki_k = msg_dummy->data[7];
+    kd_k = msg_dummy->data[8];
+
+    /*
+    qstr = QString::number(kp_s);
+    ui_.lineEdit_2->setText(qstr);
+    qstr = QString::number(ki_s);
+    ui_.lineEdit_3->setText(qstr);
+    qstr = QString::number(kd_s);
+    ui_.lineEdit_4->setText(qstr);
+
+    qstr = QString::number(kp_h);
+    ui_.lineEdit_6->setText(qstr);
+    qstr = QString::number(ki_h);
+    ui_.lineEdit_7->setText(qstr);
+    qstr = QString::number(kd_h);
+    ui_.lineEdit_5->setText(qstr);
+
+    qstr = QString::number(kp_k);
+    ui_.lineEdit_10->setText(qstr);
+    qstr = QString::number(ki_k);
+    ui_.lineEdit_8->setText(qstr);
+    qstr = QString::number(kd_k);
+    ui_.lineEdit_9->setText(qstr);
+    */
+}
+
 void coopPlugin::on_enterButton_clicked() 
 {
     //qstr = ui_.lineEdit_2->text();
     kp = ui_.lineEdit_2->text().toDouble();
-
     //qstr = ui_.lineEdit_2->text();
     ki = ui_.lineEdit_3->text().toDouble();
-
     //qstr = ui_.lineEdit_2->text();
     kd = ui_.lineEdit_4->text().toDouble();
 
@@ -55,6 +94,27 @@ void coopPlugin::on_enterButton_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
 }
 
@@ -76,6 +136,27 @@ void coopPlugin::on_kp_plus_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
 }
 
@@ -97,6 +178,27 @@ void coopPlugin::on_kp_minus_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
 }
 
@@ -118,6 +220,27 @@ void coopPlugin::on_ki_plus_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
 }
 
@@ -139,6 +262,27 @@ void coopPlugin::on_ki_minus_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
 }
 
@@ -160,6 +304,27 @@ void coopPlugin::on_kd_plus_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
 }
 
@@ -181,7 +346,531 @@ void coopPlugin::on_kd_minus_clicked()
     msg.data[0] = kp;
     msg.data[1] = ki;
     msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
     gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kp_h_plus_clicked() 
+{
+    kp = ui_.lineEdit_6->text().toDouble();
+    ki = ui_.lineEdit_7->text().toDouble();
+    kd = ui_.lineEdit_5->text().toDouble();
+
+    gapkp = ui_.gap_kp->text().toDouble();
+    kp = kp+gapkp;
+    qstr = QString::number(kp);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_6->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kp_h_minus_clicked()
+{
+    kp = ui_.lineEdit_6->text().toDouble();
+    ki = ui_.lineEdit_7->text().toDouble();
+    kd = ui_.lineEdit_5->text().toDouble();
+
+    gapkp = ui_.gap_kp->text().toDouble();
+    kp = kp-gapkp;
+    qstr = QString::number(kp);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_6->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_ki_h_plus_clicked() 
+{
+    kp = ui_.lineEdit_6->text().toDouble();
+    ki = ui_.lineEdit_7->text().toDouble();
+    kd = ui_.lineEdit_5->text().toDouble();
+
+    gapki = ui_.gap_ki->text().toDouble();
+    ki = ki+gapki;
+    qstr = QString::number(ki);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_7->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_ki_h_minus_clicked()
+{
+    kp = ui_.lineEdit_6->text().toDouble();
+    ki = ui_.lineEdit_7->text().toDouble();
+    kd = ui_.lineEdit_5->text().toDouble();
+
+    gapki = ui_.gap_ki->text().toDouble();
+    ki = ki-gapki;
+    qstr = QString::number(ki);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_7->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kd_h_plus_clicked() 
+{
+    kp = ui_.lineEdit_6->text().toDouble();
+    ki = ui_.lineEdit_7->text().toDouble();
+    kd = ui_.lineEdit_5->text().toDouble();
+
+    gapkd = ui_.gap_kd->text().toDouble();
+    kd = kd+gapkd;
+    qstr = QString::number(kd);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_5->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kd_h_minus_clicked()
+{
+    kp = ui_.lineEdit_6->text().toDouble();
+    ki = ui_.lineEdit_7->text().toDouble();
+    kd = ui_.lineEdit_5->text().toDouble();
+
+    gapkd = ui_.gap_kd->text().toDouble();
+    kd = kd-gapkd;
+    qstr = QString::number(kd);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_5->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_10->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_8->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_9->text().toDouble();
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    gain_pub.publish(msg);      
+}
+
+void coopPlugin::on_kp_k_plus_clicked() 
+{
+    kp = ui_.lineEdit_10->text().toDouble();
+    ki = ui_.lineEdit_8->text().toDouble();
+    kd = ui_.lineEdit_9->text().toDouble();
+
+    gapkp = ui_.gap_kp->text().toDouble();
+    kp = kp+gapkp;
+    qstr = QString::number(kp);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_10->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kp_k_minus_clicked()
+{
+    kp = ui_.lineEdit_10->text().toDouble();
+    ki = ui_.lineEdit_8->text().toDouble();
+    kd = ui_.lineEdit_9->text().toDouble();
+
+    gapkp = ui_.gap_kp->text().toDouble();
+    kp = kp-gapkp;
+    qstr = QString::number(kp);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_10->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    gain_pub.publish(msg);  
+}
+
+void coopPlugin::on_ki_k_plus_clicked() 
+{
+    kp = ui_.lineEdit_10->text().toDouble();
+    ki = ui_.lineEdit_8->text().toDouble();
+    kd = ui_.lineEdit_9->text().toDouble();
+
+    gapki = ui_.gap_ki->text().toDouble();
+    ki = ki+gapki;
+    qstr = QString::number(ki);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_8->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_ki_k_minus_clicked()
+{
+    kp = ui_.lineEdit_10->text().toDouble();
+    ki = ui_.lineEdit_8->text().toDouble();
+    kd = ui_.lineEdit_9->text().toDouble();
+
+    gapki = ui_.gap_ki->text().toDouble();
+    ki = ki-gapki;
+    qstr = QString::number(ki);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_8->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kd_k_plus_clicked() 
+{
+    kp = ui_.lineEdit_10->text().toDouble();
+    ki = ui_.lineEdit_8->text().toDouble();
+    kd = ui_.lineEdit_9->text().toDouble();
+
+    gapkd = ui_.gap_kd->text().toDouble();
+    kd = kd+gapkd;
+    qstr = QString::number(kd);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_9->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+
+    gain_pub.publish(msg);    
+}
+
+void coopPlugin::on_kd_k_minus_clicked()
+{
+    kp = ui_.lineEdit_10->text().toDouble();
+    ki = ui_.lineEdit_8->text().toDouble();
+    kd = ui_.lineEdit_9->text().toDouble();
+
+    gapkd = ui_.gap_kd->text().toDouble();
+    kd = kd-gapkd;
+    qstr = QString::number(kd);
+    //ui_.lineEdit->setText(qstr);
+    ui_.lineEdit_9->setText(qstr);
+
+    qstr = QString("kp : %1     ki : %2     kd : %3").arg(kp).arg(ki).arg(kd);
+    ui_.lineEdit->setText(qstr);
+
+    msg.data[6] = kp;
+    msg.data[7] = ki;
+    msg.data[8] = kd;
+    
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_2->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_3->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_4->text().toDouble();
+    msg.data[0] = kp;
+    msg.data[1] = ki;
+    msg.data[2] = kd;
+
+    //qstr = ui_.lineEdit_2->text();
+    kp = ui_.lineEdit_6->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    ki = ui_.lineEdit_7->text().toDouble();
+    //qstr = ui_.lineEdit_2->text();
+    kd = ui_.lineEdit_5->text().toDouble();
+    msg.data[3] = kp;
+    msg.data[4] = ki;
+    msg.data[5] = kd;
+    gain_pub.publish(msg);     
 }
 
 void coopPlugin::on_target_clicked()
@@ -193,6 +882,27 @@ void coopPlugin::on_target_clicked()
 
 void coopPlugin::on_reset_clicked() 
 {
+    qstr = QString::number(kp_s);
+    ui_.lineEdit_2->setText(qstr);
+    qstr = QString::number(ki_s);
+    ui_.lineEdit_3->setText(qstr);
+    qstr = QString::number(kd_s);
+    ui_.lineEdit_4->setText(qstr);
+
+    qstr = QString::number(kp_h);
+    ui_.lineEdit_6->setText(qstr);
+    qstr = QString::number(ki_h);
+    ui_.lineEdit_7->setText(qstr);
+    qstr = QString::number(kd_h);
+    ui_.lineEdit_5->setText(qstr);
+
+    qstr = QString::number(kp_k);
+    ui_.lineEdit_10->setText(qstr);
+    qstr = QString::number(ki_k);
+    ui_.lineEdit_8->setText(qstr);
+    qstr = QString::number(kd_k);
+    ui_.lineEdit_9->setText(qstr);
+
     command_reset = 1;
     msgreset.data = command_reset;
     reset_pub.publish(msgreset);
@@ -360,6 +1070,33 @@ void coopPlugin::connectionfunc()
             this, SLOT(on_kd_plus_clicked())    );
     QObject::connect(ui_.kd_minus, SIGNAL(clicked()),
             this, SLOT(on_kd_minus_clicked())    );
+
+    QObject::connect(ui_.kp_plus_2, SIGNAL(clicked()),
+            this, SLOT(on_kp_h_plus_clicked())    );
+    QObject::connect(ui_.kp_minus_2, SIGNAL(clicked()),
+            this, SLOT(on_kp_h_minus_clicked())    );
+    QObject::connect(ui_.ki_plus_2, SIGNAL(clicked()),
+            this, SLOT(on_ki_h_plus_clicked())    );
+    QObject::connect(ui_.ki_minus_2, SIGNAL(clicked()),
+            this, SLOT(on_ki_h_minus_clicked())    );
+    QObject::connect(ui_.kd_plus_2, SIGNAL(clicked()),
+            this, SLOT(on_kd_h_plus_clicked())    );
+    QObject::connect(ui_.kd_minus_2, SIGNAL(clicked()),
+            this, SLOT(on_kd_h_minus_clicked())    );
+
+    QObject::connect(ui_.kp_plus_3, SIGNAL(clicked()),
+            this, SLOT(on_kp_k_plus_clicked())    );
+    QObject::connect(ui_.kp_minus_3, SIGNAL(clicked()),
+            this, SLOT(on_kp_k_minus_clicked())    );
+    QObject::connect(ui_.ki_plus_3, SIGNAL(clicked()),
+            this, SLOT(on_ki_k_plus_clicked())    );
+    QObject::connect(ui_.ki_minus_3, SIGNAL(clicked()),
+            this, SLOT(on_ki_k_minus_clicked())    );
+    QObject::connect(ui_.kd_plus_3, SIGNAL(clicked()),
+            this, SLOT(on_kd_k_plus_clicked())    );
+    QObject::connect(ui_.kd_minus_3, SIGNAL(clicked()),
+            this, SLOT(on_kd_k_minus_clicked())    );
+
     QObject::connect(ui_.target_button, SIGNAL(clicked()),
             this, SLOT(on_target_clicked())     );
     QObject::connect(ui_.Reset_button, SIGNAL(clicked()),
@@ -401,8 +1138,9 @@ void coopPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
     reset_pub = nh.advertise<std_msgs::Int32>("reset", 1);
     command_pub = nh.advertise<std_msgs::Int32MultiArray>("control_command", 1);
     legtest_pub = nh.advertise<std_msgs::Float64MultiArray>("/legtest", 3);
+    gain_sub = nh.subscribe("init_gain", 1, msgCallbackinitgain);
 
-    msg.data.resize(3);
+    msg.data.resize(9);
     msgcommand.data.resize(4);
     msgleg.data.resize(2);
 
