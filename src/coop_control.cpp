@@ -1275,6 +1275,7 @@ void coopPlugin::listView2Plugin(const char* message) {
   //'malloc' function is too often used
   //char *plotstring = (char*)malloc(strlen(message)+2);
   if(strcmp(message, "/targettheta") == 0) {
+    list2 = QStringList();
     alphasumstring(6, message);
     model2->setStringList(list2);
     ui_.listView_2->setModel(model2);
