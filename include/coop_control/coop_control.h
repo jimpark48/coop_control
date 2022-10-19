@@ -35,6 +35,8 @@ public:
   virtual void restoreSettings(const qt_gui_cpp::Settings& plugin_settings, 
         const qt_gui_cpp::Settings& instance_settings);
 
+  virtual void listView2Plugin(const char* message1);
+
   virtual void connectionfunc();
   //comment in to signal that the plugin has a way to configure it
   //bool hasConfiguration() const;
@@ -44,6 +46,8 @@ private:
   Ui::coopwidget ui_;
   QWidget* widget_;
   QStringListModel* model;
+
+  QStringListModel* model2;
 
   ros::NodeHandle nh;
   ros::Publisher gain_pub;
@@ -56,6 +60,8 @@ private:
   Q_SIGNALS:
     void clicked();
     void clicked(const QModelIndex &index);
+
+    void toggled(bool checked);
 
   private slots:
     void on_enterButton_clicked();
@@ -86,6 +92,13 @@ private:
     void on_activated_clicked2();
     void on_quit_clicked();
     void onClickListItem(const QModelIndex &index);
+
+    void on_pushButton_clicked1(); //반드시 slots 안에 정의할 것
+    void on_pushButton_clicked2();
+    void on_pushButton_3_clicked1();
+    void on_pushButton_3_clicked2();
+    void onClickListItem2(const QModelIndex &index);
+    void onChecked(bool checked);
 };
 } //namespace coop_control
 #endif //COOP_CONTROL_COOP_CONTROL_H
