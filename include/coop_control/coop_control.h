@@ -56,6 +56,9 @@ private:
   ros::Publisher command_pub;
   ros::Publisher legtest_pub;
   ros::Subscriber gain_sub;
+  ros::Publisher MPCgain_pub;
+
+  int MPCcount = 0;
 
   Q_SIGNALS:
     void clicked();
@@ -85,6 +88,13 @@ private:
     void on_ki_k_minus_clicked();
     void on_kd_k_plus_clicked();
     void on_kd_k_minus_clicked();
+
+    void on_kp_o_plus_clicked();
+    void on_kp_o_minus_clicked();
+    void on_ki_o_plus_clicked();
+    void on_ki_o_minus_clicked();
+    void on_kd_o_plus_clicked();
+    void on_kd_o_minus_clicked();
 
     void on_target_clicked();
     void on_reset_clicked();
