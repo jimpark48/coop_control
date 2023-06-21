@@ -1941,13 +1941,38 @@ void alphasumstring(int sum, const char *mesg) {
     list2 << plotstring;
   }
 }
+//add topics of mesg to list2 with multiarray
+void datasumstring(int sum, const char *mesg) {
+  const char *ram = "/";
+  const char *ramstart = "[";
+  const char *ramend = "]";
+  const char *dataname = "data";
+  for(int i=0; i<sum; i++) {
+    char alpha = 48+i;
+    int j;
+    for(j=0; j<strlen(mesg); j++) {
+      plotstring[j] = mesg[j];
+    }
+    plotstring[j] = ram[0];
+    plotstring[j+1] = dataname[0];
+    plotstring[j+2] = dataname[1];
+    plotstring[j+3] = dataname[2];
+    plotstring[j+4] = dataname[3];
+    plotstring[j+5] = ramstart[0];
+    plotstring[j+6] = alpha;
+    plotstring[j+7] = ramend[0];
+    plotstring[j+8] = '\0';
+    list2 << plotstring;
+  }
+}
 //create detailed topics list of selected main topic in listView_2
 void coopPlugin::listView2Plugin(const char* message) {
   //'malloc' function is too often used
   //char *plotstring = (char*)malloc(strlen(message)+2);
   if(strcmp(message, "/targettheta") == 0) {
     list2 = QStringList();
-    alphasumstring(6, message);
+    // alphasumstring(6, message);
+    datasumstring(6, message);
     model2->setStringList(list2);
     ui_.listView_2->setModel(model2);
   }
