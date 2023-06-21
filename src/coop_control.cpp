@@ -1976,6 +1976,13 @@ void coopPlugin::listView2Plugin(const char* message) {
     model2->setStringList(list2);
     ui_.listView_2->setModel(model2);
   }
+  else if(strcmp(message, "/GRFTuning") == 0) {
+    list2 = QStringList();
+    // alphasumstring(6, message);
+    datasumstring(6, message);
+    model2->setStringList(list2);
+    ui_.listView_2->setModel(model2);
+  }
 
   QObject::disconnect(ui_.listView_2, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(onClickListItem2(const QModelIndex &))   );
@@ -2076,7 +2083,8 @@ void coopPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
          << "command: legtest"
          << "command: gaincontrol"
          << "plot: /targettheta"
-         << "MPC gain tunning";
+         << "MPC gain tunning"
+         << "plot: /GRFTuning";
 
     model->setStringList(list);
     ui_.listView->setModel(model);
